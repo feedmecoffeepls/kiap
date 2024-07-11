@@ -7,7 +7,7 @@ import React from 'react';
 const HomePage: React.FC = () => {
     return (
         <div>
-            <div className="float-right">
+            <div className="float-right mb-8">
                 <ItemDialogForm />
             </div>
             <ItemsList />

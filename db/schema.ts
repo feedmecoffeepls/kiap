@@ -1,4 +1,4 @@
-import { pgTable, serial, text, integer, timestamp, primaryKey } from "drizzle-orm/pg-core";
+import { pgTable, serial, text, integer, timestamp, primaryKey, unique, boolean } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
 export const bids = pgTable("bids", {
@@ -19,6 +19,17 @@ export const items = pgTable("items", {
   updated_at: timestamp("updated_at").defaultNow().notNull(),
   profile_id: text("profile_id").references(() => profiles.user_id), // The person who listed the item
 });
+
+export const itemImages = pgTable("itemImages", {
+  id: serial("id").primaryKey(),
+  created_at: timestamp("created_at").defaultNow().notNull(),
+  item_id: integer("item_id").references(() => items.id),
+  updated_at: timestamp("updated_at").defaultNow().notNull(),
+  blob_url: text("blob_url").notNull(),
+  is_banner: boolean("is_banner"),
+}, (t) => ({
+  unq: unique().on(t.item_id, t.is_banner),
+}));
 
 export const profiles = pgTable("profiles", {
   user_id: text("user_id").primaryKey().notNull(), // Clerk User Id
@@ -51,9 +62,17 @@ export const bidsRelations = relations(bids, ({ one }) => ({
 export const itemsRelations = relations(items, ({ one, many }) => ({
   bids: many(bids),
   sales: many(sales),
+  images: many(itemImages),
   profile: one(profiles, {
     fields: [items.profile_id],
     references: [profiles.user_id],
+  }),
+}));
+
+export const itemImagesRelations = relations(itemImages, ({ one }) => ({
+  item: one(items, {
+    fields: [itemImages.item_id],
+    references: [items.id],
   }),
 }));
 
@@ -82,6 +101,10 @@ export type SelectBid = typeof bids.$inferSelect;
 
 export type InsertItem = typeof items.$inferInsert;
 export type SelectItem = typeof items.$inferSelect;
+
+export type SelectItemWithItemImages = typeof items.$inferSelect & {
+  itemImages: typeof itemImages.$inferSelect[];
+};
 
 export type InsertProfile = typeof profiles.$inferInsert;
 export type SelectProfile = typeof profiles.$inferSelect;

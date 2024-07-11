@@ -26,3 +26,19 @@ export const getItem = async (itemId: number): Promise<SelectItem | null> => {
 
     return result.length > 0 ? result[0] : null;
 };
+
+interface CreateItemSchema {
+    profile_id: string;
+    title: string;
+    selling_price: number;
+    description?: string;
+}
+
+export const createItem = async ({ item }: { item: CreateItemSchema }): Promise<SelectItem | null> => {
+    const result = await db
+        .insert(items)
+        .values({ ...item })
+        .returning();
+
+    return result.length > 0 ? result[0] : null;
+};
