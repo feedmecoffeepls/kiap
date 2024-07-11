@@ -29,6 +29,8 @@ const BidDialog: React.FC<BidDialogProps> = ({ item }) => {
 
     const currentBid = form.watch('bid_amount')
 
+    const minimumBid = item.bids ? formatPrice(item.bids[0].bid_amount + 100) : "$1.00"
+
     const onSubmit = async (data: any) => {
         try {
             const insertedBid = await createBid({ item: item, bidAmount: parseInt(data.bid_amount) });
@@ -49,12 +51,12 @@ const BidDialog: React.FC<BidDialogProps> = ({ item }) => {
                             name="bid_amount"
                             render={({ field }) => (
                                 <FormItem className="w-full">
-                                    <FormLabel>Bid amoount</FormLabel>
+                                    <FormLabel>Bid amount</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="19.20" {...field} />
+                                        <Input placeholder={minimumBid} {...field} />
                                     </FormControl>
                                     <FormDescription>
-                                        Current minimum bid:
+                                        Current minimum bid: {minimumBid}
                                     </FormDescription>
                                     <FormMessage />
                                 </FormItem>

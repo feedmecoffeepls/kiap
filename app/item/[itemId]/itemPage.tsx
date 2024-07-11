@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import BidDialog from '@/components/items/bidDialog';
 import PurchaseDialog from '@/components/items/purchaseDialog';
+import ImageCarousel from '@/components/items/imageCarousel';
 
 interface ItemPageProps {
     item: SelectItem & {
@@ -22,9 +23,12 @@ const demoImageArray = ["/testUnsplash.jpg", "/testUnsplash.jpg", "/testUnsplash
 const ItemPage: React.FC<ItemPageProps> = ({ item }) => {
 
     return (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="col-span-2">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="col-span-2 hidden lg:block">
                 <Gallery images={demoImageArray} />
+            </div>
+            <div className="lg:hidden">
+                <ImageCarousel images={demoImageArray} />
             </div>
             <div className="relative">
                 <div className="sticky top-0 h-[100svh] p-8 ">
