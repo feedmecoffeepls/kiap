@@ -1,7 +1,7 @@
 "use server";
 
 import { and, asc, eq, gt, isNull, notExists, sql } from 'drizzle-orm';
-import { items, sales } from '../db/schema';
+import { bids, items, sales } from '../db/schema';
 import db from '../db/drizzle';
 import { SelectItem } from '../db/schema';
 
@@ -9,8 +9,13 @@ export const getItems = async (cursor?: number, pageSize = 10): Promise<SelectIt
 
     const result = await db.select()
         .from(items)
-        .leftJoin(sales, eq(items.id, sales.item_id))  // Replace 'id' and 'Item_id' with actual column names
-        .where(and(isNull(sales.id), cursor ? gt(items.id, cursor) : undefined)).limit(pageSize).orderBy(asc(items.id)).execute()
+        .leftJoin(sales, eq(items.id, sales.item_id))
+        .where(and(isNull(sales.id), cursor ? gt(items.id, cursor) : undefined))
+        .limit(pageSize)
+        .orderBy(asc(items.id))
+        .execute();
+
+    console.log(result);
 
     return result.map((item) => item.items);
 };

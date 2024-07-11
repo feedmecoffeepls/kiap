@@ -10,7 +10,8 @@ import { Input } from '../ui/input';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
 import { createItem } from '@/actions/itemActions';
 import { Textarea } from '../ui/textarea';
-import sharp from 'sharp';
+import Image from 'next/image';
+import { upload } from '@vercel/blob/client';
 
 
 type ItemFormProps = {
@@ -20,15 +21,24 @@ const itemSchema = z.object({
     title: z.string(),
     description: z.string().optional(),
     selling_price: z.string(),
-    itemImages: z.instanceof(File),
+    itemImages: z.string(),
 });
 
 const ItemDialogForm: React.FC<ItemFormProps> = ({ item }) => {
+    const [banner, setBanner] = React.useState<File | null>(null);
+
+    const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const files = e.target.files;
+        if (files && files.length > 0) {
+            setBanner(files[0] || null); z
+            console.log(files[0]);
+        }
+    };
+
+
     const form = useForm<z.infer<typeof itemSchema>>({
         resolver: zodResolver(itemSchema),
     });
-
-    const banner = form.watch("itemImages")
 
     const onSubmit = async (data: any) => {
         console.log({ data: data })
@@ -45,28 +55,11 @@ const ItemDialogForm: React.FC<ItemFormProps> = ({ item }) => {
 
     return (
         <Dialog>
-            <DialogTrigger asChild>{item ? <Button>Update Item</Button> : <Button>List Item</Button>}</DialogTrigger>
+            <DialogTrigger asChild>{item ? <Button>Update Item</Button> : <Button>+ List new item</Button>}</DialogTrigger>
             <DialogContent >
                 <DialogHeader><DialogTitle>{item ? "Update Item" : "List Item"}</DialogTitle></DialogHeader>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                        {/* <FormField
-                            control={form.control}
-                            name="itemImages"
-                            render={({ field }) => (
-                                <FormItem className="w-full">
-                                    <FormLabel>Banner</FormLabel>
-                                    <FormControl>
-                                        <Input type="file" {...field} />
-                                    </FormControl>
-                                    {banner && <img src={URL.createObjectURL(banner)} />}
-                                    <FormDescription>
-                                        Your banner image
-                                    </FormDescription>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        /> */}
                         <FormField
                             control={form.control}
                             name="title"

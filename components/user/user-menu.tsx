@@ -30,9 +30,10 @@ const UserMenu = () => {
                 </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-                <DropdownMenuItem onSelect={() => console.log('Profile Selected')}>Your Page</DropdownMenuItem>
-                <DropdownMenuItem onSelect={() => console.log('Settings Selected')}>Settings</DropdownMenuItem>
-                <DropdownMenuItem onSelect={() => signOut({ redirectUrl: '/' })}>Logout</DropdownMenuItem>
+                <Link href="/dashboard">
+                    <DropdownMenuItem className="cursor-pointer">Your Page</DropdownMenuItem>
+                </Link>
+                <DropdownMenuItem className="cursor-pointer" onSelect={() => signOut({ redirectUrl: '/' })}>Logout</DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
     )

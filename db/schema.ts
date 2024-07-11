@@ -106,6 +106,7 @@ export type SelectBid = typeof bids.$inferSelect;
 export type InsertItem = typeof items.$inferInsert;
 export type SelectItem = typeof items.$inferSelect;
 
+export type InsertItemImages = typeof itemImages.$inferInsert;
 export type SelectItemWithItemImages = typeof items.$inferSelect & {
   itemImages: typeof itemImages.$inferSelect[];
 };
