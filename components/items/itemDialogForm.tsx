@@ -50,7 +50,7 @@ const ItemDialogForm: React.FC<ItemFormProps> = ({ item }) => {
                 <DialogHeader><DialogTitle>{item ? "Update Item" : "List Item"}</DialogTitle></DialogHeader>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                        <FormField
+                        {/* <FormField
                             control={form.control}
                             name="itemImages"
                             render={({ field }) => (
@@ -66,7 +66,7 @@ const ItemDialogForm: React.FC<ItemFormProps> = ({ item }) => {
                                     <FormMessage />
                                 </FormItem>
                             )}
-                        />
+                        /> */}
                         <FormField
                             control={form.control}
                             name="title"

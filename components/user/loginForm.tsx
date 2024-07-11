@@ -56,7 +56,7 @@ const LoginForm = () => {
         <Form {...form}>
             <div className="text-center py-8">
                 <h1 className="text-3xl font-bold text-center mt-8 mb-4">Welcome Back</h1>
-                <p>Don't have an account? <Link href="/auth/signup" className="underline">Sign up here</Link></p>
+                <p>{"Don't have an account?"} <Link href="/auth/signup" className="underline">Sign up here</Link></p>
             </div>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                 <FormField

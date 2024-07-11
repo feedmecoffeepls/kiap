@@ -9,7 +9,7 @@ import { createSale } from '@/actions/saleActions';
 
 interface ItemPageProps {
     item: SelectItem & {
-        sales: SelectSale[];
+        sales?: SelectSale[];
     };
 }
 
@@ -43,7 +43,7 @@ const ItemPage: React.FC<ItemPageProps> = ({ item }) => {
                             <h6>Details</h6>
                             <p>{item.description}</p>
                         </div>
-                        {item.sales.length === 0 && (
+                        {item.sales?.length === 0 && (
                             <div>
                                 <Button className="full-w" onClick={() => handlePurchase(item)}>Buy now ({formatPrice(item.selling_price)})</Button>
                                 <Button className="full-w">Bid ({formatPrice(item.selling_price)})</Button>
