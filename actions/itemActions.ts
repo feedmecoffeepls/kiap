@@ -16,7 +16,7 @@ export const getItems = async (cursor?: number, pageSize = 10): Promise<SelectIt
 };
 
 export const getItem = async (itemId: number): Promise<SelectItem | null> => {
-    const result = await db.query.items.findFirst({ where: (items, { eq }) => (eq(items.id, itemId)), with: { sales: true } });
+    const result = await db.query.items.findFirst({ where: (items, { eq }) => (eq(items.id, itemId)), with: { sales: true, profile: true, bids: { orderBy: (bids, { desc }) => [desc(bids.bid_amount)], limit: 1 } } });
 
     return result ? result : null;
 };

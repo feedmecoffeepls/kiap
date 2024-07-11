@@ -77,12 +77,8 @@ body {
   font-family: 'Barlow', sans-serif;
 }
 
-h6 {
-  @apply md:text-lg lg:text-lg xl:text-lg 2xl:text-xl;
-}
 
 p,
-h1,
 h2,
 h3,
 h4,
@@ -93,4 +89,15 @@ textarea {
   font-family: "inter", sans-serif;
   font-weight: 400;
   @apply text-monochrome-offBlack
+}
+
+h6 {
+  font-family: "barlow", sans-serif;
+  @apply md:text-lg lg:text-lg xl:text-lg 2xl:text-xl font-bold;
+}
+
+h1 {
+  font-family: "barlow", sans-serif;
+  font-weight: 700;
+  @apply text-monochrome-offBlack text-lg md:text-xl lg:text-2xl xl:text-3xl
 }
