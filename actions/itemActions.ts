@@ -1,30 +1,24 @@
 "use server";
 
-import { asc, eq, gt, sql } from 'drizzle-orm';
-import { items } from '../db/schema';
+import { and, asc, eq, gt, isNull, notExists, sql } from 'drizzle-orm';
+import { items, sales } from '../db/schema';
 import db from '../db/drizzle';
 import { SelectItem } from '../db/schema';
 
 export const getItems = async (cursor?: number, pageSize = 10): Promise<SelectItem[]> => {
-    const result = await db
-        .select()
-        .from(items)
-        .where(cursor ? gt(items.id, cursor) : undefined)
-        .limit(pageSize)
-        .orderBy(asc(items.id))
-        .execute();
 
-    return result;
+    const result = await db.select()
+        .from(items)
+        .leftJoin(sales, eq(items.id, sales.item_id))  // Replace 'id' and 'Item_id' with actual column names
+        .where(and(isNull(sales.id), cursor ? gt(items.id, cursor) : undefined)).limit(pageSize).orderBy(asc(items.id)).execute()
+
+    return result.map((item) => item.items);
 };
 
 export const getItem = async (itemId: number): Promise<SelectItem | null> => {
-    const result = await db
-        .select()
-        .from(items)
-        .where(eq(items.id, itemId))
-        .limit(1)
+    const result = await db.query.items.findFirst({ where: (items, { eq }) => (eq(items.id, itemId)), with: { sales: true } });
 
-    return result.length > 0 ? result[0] : null;
+    return result ? result : null;
 };
 
 interface CreateItemSchema {

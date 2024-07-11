@@ -14,6 +14,7 @@ const ItemsList: React.FC = () => {
         const fetchItems = async () => {
             try {
                 const fetchedItems = await getItems();
+                console.log(fetchItems)
                 setItems(fetchedItems || []);
                 setLoading(false);
             } catch (err) {

@@ -8,8 +8,9 @@ import { z } from 'zod';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage, FormDescription } from '@/components/ui/form';
-import { useSignIn } from '@clerk/nextjs';
+import { useSignUp } from '@clerk/nextjs';
 import Link from 'next/link';
+import { createProfile } from '@/actions/profileActions';
 
 const signupSchema = z.object({
     email: z.string().email({ message: "Invalid email address" }).nonempty({ message: "Email is required" }),
@@ -20,7 +21,7 @@ type SignupFormInputs = z.infer<typeof signupSchema>;
 
 const SignupForm = () => {
     const router = useRouter();
-    const { isLoaded, signIn, setActive } = useSignIn();
+    const { isLoaded, signUp, setActive } = useSignUp();
     const form = useForm<SignupFormInputs>({
         resolver: zodResolver(signupSchema)
     });
@@ -34,14 +35,17 @@ const SignupForm = () => {
                 return;
             }
 
-            const signInAttempt = await signIn.create({
-                identifier: data.email,
+            const signUpAttempt = await signUp.create({
+                emailAddress: data.email,
                 password: data.password,
             });
 
-            if (signInAttempt.status === 'complete') {
-                await setActive({ session: signInAttempt.createdSessionId });
-                router.push('/');
+            console.log(signUpAttempt)
+
+            if (signUpAttempt.status === 'complete' && signUpAttempt.createdUserId) {
+                await setActive({ session: signUpAttempt.createdSessionId });
+                await createProfile(signUpAttempt.createdUserId);
+                router.push('/')
             } else {
                 setError("Timeout error. Please try again.");
             }

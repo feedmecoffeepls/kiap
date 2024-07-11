@@ -8,7 +8,9 @@ export const bids = pgTable("bids", {
   item_id: integer("item_id").references(() => items.id), // The Item that was bid on
   profile_id: text("profile_id").references(() => profiles.user_id), // Represents the person bidding
   updated_at: timestamp("updated_at").defaultNow().notNull(),
-});
+}, (t) => ({
+  unq: unique().on(t.item_id, t.bid_amount),
+}));
 
 export const items = pgTable("items", {
   id: serial("id").primaryKey(),
@@ -46,7 +48,9 @@ export const sales = pgTable("sales", {
   item_id: integer("item_id").references(() => items.id),
   profile_id: text("profile_id").references(() => profiles.user_id), // ID of the buyer
   updated_at: timestamp("updated_at").defaultNow().notNull(),
-});
+}, (t) => ({
+  unq: unique().on(t.item_id, t.profile_id),
+}));
 
 export const bidsRelations = relations(bids, ({ one }) => ({
   item: one(items, {

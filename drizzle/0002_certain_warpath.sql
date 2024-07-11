@@ -1,0 +1,2 @@
+ALTER TABLE "bids" ADD CONSTRAINT "bids_item_id_bid_amount_unique" UNIQUE("item_id","bid_amount");--> statement-breakpoint
+ALTER TABLE "sales" ADD CONSTRAINT "sales_item_id_profile_id_unique" UNIQUE("item_id","profile_id");
