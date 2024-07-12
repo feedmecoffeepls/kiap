@@ -33,7 +33,7 @@ const BidDialog: React.FC<BidDialogProps> = ({ item }) => {
 
     const currentBid = form.watch('bid_amount')
 
-    const minimumBid = item.bids ? formatPrice(item.bids[0].bid_amount + 100) : "$1.00"
+    const minimumBid = item.bids[0]?.bid_amount ? formatPrice(item.bids[0].bid_amount + 100) : "$1.00"
 
     const onSubmit = async (data: any) => {
         try {
@@ -46,7 +46,7 @@ const BidDialog: React.FC<BidDialogProps> = ({ item }) => {
 
     return (
         <Dialog>
-            <DialogTrigger asChild><Button variant="outline" size="cta">Bid ({formatPrice(item.bids[0].bid_amount + 100)})</Button></DialogTrigger>
+            <DialogTrigger asChild><Button variant="outline" size="cta">Min bid: ({minimumBid})</Button></DialogTrigger>
             <DialogContent >
                 <DialogHeader><DialogTitle>Bid for {item.title}</DialogTitle></DialogHeader>
                 <Form {...form}>

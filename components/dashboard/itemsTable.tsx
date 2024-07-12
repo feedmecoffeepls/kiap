@@ -27,7 +27,6 @@ const ItemsTable: React.FC = () => {
     const items = data
     if (isPending) { return <div>Loading</div> }
     if (!items || items.length === 0) { return <div>No items found</div> }
-    console.log(items)
     return (
         <>
             <h1 className="pb-4">Your Items</h1>

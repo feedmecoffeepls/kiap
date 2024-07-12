@@ -1,4 +1,3 @@
-import { getItem } from '@/actions/itemActions';
 import ItemPage from './itemPage';
 
 import { getQueryClient } from '@/lib/tanstack/queryClient';

@@ -10,6 +10,10 @@ import ImageCarousel from '@/components/items/imageCarousel';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { fetchItem } from '@/lib/tanstack/fetchItem';
 import ImageDialog from '@/components/items/imageDialog';
+import ItemDialogForm from '@/components/items/itemDialogForm';
+import { useUser } from '@clerk/nextjs';
+import { useSellerMode } from '@/stores/sellerMode';
+import { is } from 'drizzle-orm';
 
 interface ItemPageProps {
     itemId: number;
@@ -23,6 +27,14 @@ const ItemPage: React.FC<ItemPageProps> = ({ itemId }) => {
 
     const itemImages = item.images.map((image) => image.blob_url)
 
+    const { user } = useUser();
+    const isOwner = user?.id === item.profile_id;
+
+    console.log(user?.id)
+    console.log(item)
+
+    const sellerMode = useSellerMode((state) => state.sellerMode)
+
 
     return (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -35,9 +47,14 @@ const ItemPage: React.FC<ItemPageProps> = ({ itemId }) => {
             <div className="relative">
                 <div className="sticky top-0 h-[100svh] p-8 ">
                     <div className="full-w">
-                        <div className="mb-8">
-                            <ImageDialog item={item} />
-                        </div>
+                        {sellerMode && isOwner && (
+                            <div className="mb-8">
+                                <ImageDialog item={item} />
+                                <span className="ml-4">
+                                    <ItemDialogForm item={item} />
+                                </span>
+                            </div>
+                        )}
                         <div className="flex items-center mb-8">
                             <Avatar>
                                 <AvatarImage src="https://github.com/shadcn.png" alt="User avatar" />

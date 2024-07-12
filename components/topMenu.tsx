@@ -6,8 +6,10 @@ import Link from 'next/link';
 import { useSellerMode } from '@/stores/sellerMode';
 import { Switch } from './ui/switch';
 import { Label } from './ui/label';
+import { useUser } from '@clerk/nextjs';
 
 const TopMenu: React.FC = () => {
+    const { user } = useUser();
     const sellerMode = useSellerMode((state) => state.sellerMode);
     const setSellerMode = useSellerMode((state) => state.setSellerMode);
     console.log(sellerMode);
@@ -19,13 +21,15 @@ const TopMenu: React.FC = () => {
                 </Link>
             </div>
             <div className="flex items-center justify-end flex-grow">
-                <div className="flex items-center space-x-2 pr-4">
-                    <Label htmlFor="airplane-mode">{sellerMode ? "Seller" : "Buyer"} Mode</Label>
-                    <Switch
-                        checked={sellerMode}
-                        onClick={() => setSellerMode(!sellerMode)}
-                    />
-                </div>
+                {user && (
+                    <div className="flex items-center space-x-2 pr-4">
+                        <Label htmlFor="airplane-mode">{sellerMode ? "Seller" : "Buyer"} Mode</Label>
+                        <Switch
+                            checked={sellerMode}
+                            onClick={() => setSellerMode(!sellerMode)}
+                        />
+                    </div>
+                )}
                 <UserMenu />
             </div>
         </div>

@@ -4,6 +4,7 @@ import { and, asc, eq, gt, isNull, notExists, sql } from 'drizzle-orm';
 import { bids, items, sales, SelectItemWithRelations } from '../db/schema';
 import db from '../db/drizzle';
 import { SelectItem } from '../db/schema';
+import { currentUser } from '@clerk/nextjs/server';
 
 export const getItems = async (cursor?: number, pageSize = 10): Promise<SelectItem[]> => {
 
@@ -70,10 +71,27 @@ interface CreateItemSchema {
 }
 
 export const createItem = async ({ item }: { item: CreateItemSchema }): Promise<SelectItem | null> => {
+    const user = await currentUser();
+    if (!user) {
+        return null;
+    }
     const result = await db
         .insert(items)
-        .values({ ...item })
+        .values({ ...item, profile_id: user.id })
         .returning();
+
+    return result.length > 0 ? result[0] : null;
+};
+
+
+export const updateItem = async ({ item }: { item: SelectItem }): Promise<SelectItem | null> => {
+    const result = await db
+        .update(items)
+        .set({ ...item })
+        .where(eq(items.id, item.id))
+        .returning();
+
+    console.log(item)
 
     return result.length > 0 ? result[0] : null;
 };
