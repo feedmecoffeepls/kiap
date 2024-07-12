@@ -1,7 +1,7 @@
 "use server";
 
 import { and, asc, eq, gt, isNull, notExists, sql } from 'drizzle-orm';
-import { bids, items, sales } from '../db/schema';
+import { bids, items, sales, SelectItemWithRelations } from '../db/schema';
 import db from '../db/drizzle';
 import { SelectItem } from '../db/schema';
 
@@ -20,8 +20,14 @@ export const getItems = async (cursor?: number, pageSize = 10): Promise<SelectIt
     return result.map((item) => item.items);
 };
 
-export const getItem = async (itemId: number): Promise<SelectItem | null> => {
-    const result = await db.query.items.findFirst({ where: (items, { eq }) => (eq(items.id, itemId)), with: { sales: true, profile: true, bids: { orderBy: (bids, { desc }) => [desc(bids.bid_amount)], limit: 1 } } });
+export const getItem = async (itemId: number): Promise<SelectItemWithRelations | null> => {
+    const result = await db.query.items.findFirst(
+        {
+            where: (items, { eq }) => (
+                eq(items.id, itemId)),
+            with: { sales: true, profile: true, images: true, bids: { orderBy: (bids, { desc }) => [desc(bids.bid_amount)], limit: 1 } }
+        }
+    );
 
     return result ? result : null;
 };

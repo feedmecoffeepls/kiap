@@ -9,18 +9,24 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import BidDialog from '@/components/items/bidDialog';
 import PurchaseDialog from '@/components/items/purchaseDialog';
 import ImageCarousel from '@/components/items/imageCarousel';
-
-interface ItemPageProps {
-    item: SelectItem & {
-        sales?: SelectSale[];
-        profile: SelectProfile;
-        bids?: SelectBid[];
-    };
-}
+import { useSuspenseQuery } from '@tanstack/react-query';
+import { fetchItem } from '@/lib/tanstack/fetchItem';
 
 const demoImageArray = ["/testUnsplash.jpg", "/testUnsplash.jpg", "/testUnsplash.jpg", "/testUnsplash.jpg", "/testUnsplash.jpg", "/testUnsplash.jpg", "/testUnsplash.jpg", "/testUnsplash.jpg"];
 
-const ItemPage: React.FC<ItemPageProps> = ({ item }) => {
+interface ItemPageProps {
+    itemId: number;
+}
+
+const ItemPage: React.FC<ItemPageProps> = ({ itemId }) => {
+
+    const { data: item, isLoading, error } = useSuspenseQuery(fetchItem(itemId))
+
+    console.log(item)
+
+    if (isLoading) return <div>Loading...</div>
+
+    if (item === null) return <div>Item not found</div>
 
     return (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

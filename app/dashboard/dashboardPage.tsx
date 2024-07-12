@@ -6,7 +6,6 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 
 const DashboardPage = () => {
     const { user } = useUser()
-    const { data, isLoading, error } = useSuspenseQuery(fetchUserBids)
     return (
         <div>
             <h1>Your Bids</h1>
