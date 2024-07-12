@@ -9,6 +9,7 @@ import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import ClientProviders from "./clientProviders";
 import { extractRouterConfig } from "uploadthing/server";
 import { ourFileRouter } from "./api/uploadthing/core";
+import { Toaster } from "@/components/ui/toaster"
 
 const inter = Inter({ subsets: ["latin"] });
 const barlow = Barlow({ weight: ["700"], subsets: ["latin"] });
@@ -32,6 +33,7 @@ export default function RootLayout({
           <body className={barlow.className + " " + inter.className}>
             <div className="px-4 md:px-12 lg:px-16 xl:px-24">
               <TopMenu />
+              <Toaster />
               {children}
             </div>
           </body>

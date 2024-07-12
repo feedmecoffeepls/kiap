@@ -11,8 +11,8 @@ const DashboardPage = () => {
 
     return (
         <div>
-            {sellerMode && <BidsTable />}
-            {!sellerMode && <ItemsTable />}
+            {!sellerMode && <BidsTable />}
+            {sellerMode && <ItemsTable />}
         </div>
     )
 }

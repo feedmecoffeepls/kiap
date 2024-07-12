@@ -1,7 +1,7 @@
 "use server";
 
 import { eq } from 'drizzle-orm';
-import { sales, SelectItem, SelectSale } from '../db/schema';
+import { sales, SelectBid, SelectItem, SelectSale } from '../db/schema';
 import db from '../db/drizzle';
 
 import { currentUser } from '@clerk/nextjs/server';
@@ -30,6 +30,16 @@ export const createSale = async (item: SelectItem): Promise<SelectSale | { messa
     const result = await db
         .insert(sales)
         .values({ profile_id: user.id, item_id: item.id })
+        .returning();
+
+    return result.length > 0 ? result[0] : { message: "Something went wrong" };
+};
+
+export const createSaleWithBid = async (item: SelectItem, bid: SelectBid): Promise<SelectSale | { message: string }> => {
+
+    const result = await db
+        .insert(sales)
+        .values({ profile_id: bid.profile_id, item_id: item.id, bid_id: bid.id })
         .returning();
 
     return result.length > 0 ? result[0] : { message: "Something went wrong" };
