@@ -24,19 +24,22 @@ interface ItemPageProps {
 
 const ItemPage: React.FC<ItemPageProps> = ({ itemId }) => {
 
+    const { user } = useUser();
+    const sellerMode = useSellerMode((state) => state.sellerMode)
     const { data: item, isLoading, error, refetch } = useSuspenseQuery(fetchItem(itemId))
+
     if (isLoading) return <div>Loading...</div>
     if (item === null) return <div>Item not found</div>
 
     const itemImages = item.images.map((image) => image.blob_url)
 
-    const { user } = useUser();
-    const isOwner = user?.id === item.profile_id;
 
-    console.log(user?.id)
-    console.log(item)
-
-    const sellerMode = useSellerMode((state) => state.sellerMode)
+    let isOwner
+    if (user) {
+        isOwner = user.id === item.profile_id;
+    } else {
+        isOwner = false;
+    }
 
 
     return (

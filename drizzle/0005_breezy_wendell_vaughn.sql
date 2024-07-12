@@ -1,0 +1,1 @@
+ALTER TABLE "sales" ALTER COLUMN "item_id" SET NOT NULL;
