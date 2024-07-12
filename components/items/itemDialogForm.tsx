@@ -1,5 +1,5 @@
 // 1. Import necessary modules
-import React from 'react';
+import React, { useState } from 'react';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -10,11 +10,13 @@ import { Input } from '../ui/input';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
 import { createItem, updateItem } from '@/actions/itemActions';
 import { Textarea } from '../ui/textarea';
+import { toast } from '../ui/use-toast';
 
 
 
 type ItemFormProps = {
     item?: SelectItemWithRelations;
+    refetch: () => void;
 };
 const itemSchema = z.object({
     title: z.string(),
@@ -22,7 +24,7 @@ const itemSchema = z.object({
     selling_price: z.string(),
 });
 
-const ItemDialogForm: React.FC<ItemFormProps> = ({ item }) => {
+const ItemDialogForm: React.FC<ItemFormProps> = ({ item, refetch }) => {
     const [banner, setBanner] = React.useState<File | null>(null);
 
     const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,21 +46,34 @@ const ItemDialogForm: React.FC<ItemFormProps> = ({ item }) => {
         if (item) {
             try {
                 const updatedItem = await updateItem({ item: { ...data, selling_price: parseFloat(data.selling_price), id: item.id } });
-                console.log(updatedItem)
+                await refetch();
+                toast({
+                    title: "Item updated",
+                    description: "We have updated your item",
+                })
+                setOpen(false)
             } catch (error) {
                 form.setError('title', { message: 'Failed to create item' });
             }
         } else {
             try {
                 const createdItem = await createItem({ item: { ...data, selling_price: parseFloat(data.selling_price) } });
+                await refetch();
+                toast({
+                    title: "Item listed",
+                    description: "We have listed your item",
+                })
+                setOpen(false)
             } catch (error) {
                 form.setError('title', { message: 'Failed to create item' });
             }
         }
     };
 
+    const [open, setOpen] = useState(false)
+
     return (
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>{item ? <Button variant="noDesign">Update Item</Button> : <Button>+ List new item</Button>}</DialogTrigger>
             <DialogContent >
                 <DialogHeader><DialogTitle>{item ? "Update Item" : "List Item"}</DialogTitle></DialogHeader>

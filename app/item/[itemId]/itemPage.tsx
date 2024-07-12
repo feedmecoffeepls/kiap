@@ -21,7 +21,7 @@ interface ItemPageProps {
 
 const ItemPage: React.FC<ItemPageProps> = ({ itemId }) => {
 
-    const { data: item, isLoading, error } = useSuspenseQuery(fetchItem(itemId))
+    const { data: item, isLoading, error, refetch } = useSuspenseQuery(fetchItem(itemId))
     if (isLoading) return <div>Loading...</div>
     if (item === null) return <div>Item not found</div>
 
@@ -51,7 +51,7 @@ const ItemPage: React.FC<ItemPageProps> = ({ itemId }) => {
                             <div className="mb-8">
                                 <ImageDialog item={item} />
                                 <span className="ml-4">
-                                    <ItemDialogForm item={item} />
+                                    <ItemDialogForm item={item} refetch={refetch} />
                                 </span>
                             </div>
                         )}
@@ -75,7 +75,7 @@ const ItemPage: React.FC<ItemPageProps> = ({ itemId }) => {
                             <h6>Details</h6>
                             <p className="my-2">{item.description}</p>
                         </div>
-                        {!item.sales || item.sales?.length === 0 && (
+                        {!item.sales || item.sales?.length === 0 && !isOwner && (
                             <>
                                 <div className="full-w my-4">
                                     <PurchaseDialog item={item} />
@@ -85,6 +85,7 @@ const ItemPage: React.FC<ItemPageProps> = ({ itemId }) => {
                                 </div>
                             </>
                         )}
+                        {isOwner && <p className="font-bold">You are the seller of this item.</p>}
                     </div>
                 </div>
             </div>
