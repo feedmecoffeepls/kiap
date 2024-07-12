@@ -1,18 +1,15 @@
 "use client"
 
 import React from 'react';
-import { SelectBid, SelectItem, SelectProfile, SelectSale } from '@/db/schema';
 import Gallery from '@/components/ui/gallery';
 import { formatPrice } from '@/lib/formatPrice';
-import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import BidDialog from '@/components/items/bidDialog';
 import PurchaseDialog from '@/components/items/purchaseDialog';
 import ImageCarousel from '@/components/items/imageCarousel';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { fetchItem } from '@/lib/tanstack/fetchItem';
-
-const demoImageArray = ["/testUnsplash.jpg", "/testUnsplash.jpg", "/testUnsplash.jpg", "/testUnsplash.jpg", "/testUnsplash.jpg", "/testUnsplash.jpg", "/testUnsplash.jpg", "/testUnsplash.jpg"];
+import ImageDialog from '@/components/items/imageDialog';
 
 interface ItemPageProps {
     itemId: number;
@@ -21,30 +18,32 @@ interface ItemPageProps {
 const ItemPage: React.FC<ItemPageProps> = ({ itemId }) => {
 
     const { data: item, isLoading, error } = useSuspenseQuery(fetchItem(itemId))
-
-    console.log(item)
-
     if (isLoading) return <div>Loading...</div>
-
     if (item === null) return <div>Item not found</div>
+
+    const itemImages = item.images.map((image) => image.blob_url)
+
 
     return (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="col-span-2 hidden lg:block">
-                <Gallery images={demoImageArray} />
+                <Gallery images={itemImages} />
             </div>
             <div className="lg:hidden">
-                <ImageCarousel images={demoImageArray} />
+                <ImageCarousel images={itemImages} />
             </div>
             <div className="relative">
                 <div className="sticky top-0 h-[100svh] p-8 ">
                     <div className="full-w">
+                        <div>
+                            <ImageDialog item={item} />
+                        </div>
                         <div className="flex items-center mb-8">
                             <Avatar>
                                 <AvatarImage src="https://github.com/shadcn.png" alt="User avatar" />
                                 <AvatarFallback delayMs={600}>U</AvatarFallback>
                             </Avatar>
-                            <p className="ml-4 font-bold">{item.profile.username}</p>
+                            <p className="ml-4 font-bold"> {item.profile?.username} </p>
                         </div>
                         <div>
                             <h1 className="mb-2">{item.title}</h1>

@@ -28,6 +28,7 @@ export const itemImages = pgTable("itemImages", {
   item_id: integer("item_id").references(() => items.id),
   updated_at: timestamp("updated_at").defaultNow().notNull(),
   blob_url: text("blob_url").notNull(),
+  ut_key: text("ut_key").notNull(),
   is_banner: boolean("is_banner"),
 }, (t) => ({
   unq: unique().on(t.item_id, t.is_banner),

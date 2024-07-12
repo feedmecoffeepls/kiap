@@ -1,0 +1,1 @@
+ALTER TABLE "itemImages" ADD COLUMN "ut_key" text NOT NULL;
