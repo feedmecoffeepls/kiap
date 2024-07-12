@@ -7,15 +7,12 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { SelectBid } from "@/db/schema";
+import { SelectBid, SelectItem, SelectSale } from "@/db/schema";
 import { formatPrice } from "@/lib/formatPrice";
+import { BidsWithRelationships } from "@/types/bidsWithRelations";
 
-interface BidsTableProps {
-    bids: SelectBid[];
-}
 
-const BidsTable: React.FC<BidsTableProps> = ({ bids }) => {
-    console.log(bids)
+const BidsTable: React.FC<BidsWithRelationships> = ({ bids }) => {
     return (
         <Table>
             <TableCaption>A list of your recent bids</TableCaption>
@@ -27,11 +24,11 @@ const BidsTable: React.FC<BidsTableProps> = ({ bids }) => {
                 </TableRow>
             </TableHeader>
             <TableBody>
-                {bids.map((bids, key) =>
+                {bids.map((bid, key) =>
                     <TableRow key={"bid-" + key}>
-                        <TableCell className="font-medium"></TableCell>
-                        <TableCell>{formatPrice(bids.bid_amount)}</TableCell>
-                        <TableCell className="text-right">$250.00</TableCell>
+                        <TableCell className="font-medium">{bid.item.title}</TableCell>
+                        <TableCell>{formatPrice(bid.bid_amount)}</TableCell>
+                        <TableCell className="text-right">{bid.item?.sales ? "Successful" : "Pending"}</TableCell>
                     </TableRow>
                 )}
             </TableBody>

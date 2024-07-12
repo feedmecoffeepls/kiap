@@ -21,15 +21,21 @@ export const getItems = async (cursor?: number, pageSize = 10): Promise<SelectIt
 };
 
 export const getItem = async (itemId: number): Promise<SelectItemWithRelations | null> => {
-    const result = await db.query.items.findFirst(
+    let result = await db.query.items.findFirst(
         {
             where: (items, { eq }) => (
                 eq(items.id, itemId)),
-            with: { sales: true, profile: true, images: true, bids: { orderBy: (bids, { desc }) => [desc(bids.bid_amount)], limit: 1 } }
+            with: { sales: true, profile: true, images: true, bids: true }
         }
     );
 
-    return result ? result : null;
+    if (result) {
+        const sortedBids = result.bids.sort((a, b) => b.bid_amount - a.bid_amount);
+        result.bids = sortedBids;
+        return result;
+    } else {
+        return null
+    }
 };
 
 interface CreateItemSchema {

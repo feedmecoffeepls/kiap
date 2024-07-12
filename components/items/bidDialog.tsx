@@ -9,13 +9,17 @@ import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
 import { createBid } from '@/actions/bidActions';
-import { SelectItem } from '@/db/schema';
+import { SelectBid, SelectItem } from '@/db/schema';
 import { formatPrice } from '@/lib/formatPrice';
 
+interface BidWithItem extends SelectItem {
+    bids: SelectBid[]
+}
 
 type BidDialogProps = {
-    item: SelectItem;
-};
+    item: BidWithItem
+}
+
 const bidSchema = z.object({
     bid_amount: z.string(),
 });
@@ -35,9 +39,6 @@ const BidDialog: React.FC<BidDialogProps> = ({ item }) => {
         try {
             const insertedBid = await createBid({ item: item, bidAmount: parseInt(data.bid_amount) });
             console.log(insertedBid);
-            if (insertedBid.message) {
-                form.setError('title', { message: insertedBid.message });
-            }
         } catch (error) {
             form.setError('title', { message: 'Failed to create bid' });
         }
@@ -45,7 +46,7 @@ const BidDialog: React.FC<BidDialogProps> = ({ item }) => {
 
     return (
         <Dialog>
-            <DialogTrigger asChild><Button variant="outline" size="cta">Bid ({formatPrice(item.selling_price)})</Button></DialogTrigger>
+            <DialogTrigger asChild><Button variant="outline" size="cta">Bid ({formatPrice(item.bids[0].bid_amount + 100)})</Button></DialogTrigger>
             <DialogContent >
                 <DialogHeader><DialogTitle>Bid for {item.title}</DialogTitle></DialogHeader>
                 <Form {...form}>

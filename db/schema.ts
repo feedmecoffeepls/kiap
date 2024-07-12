@@ -5,7 +5,7 @@ export const bids = pgTable("bids", {
   id: serial("id").primaryKey(),
   bid_amount: integer("bid_amount").notNull(),
   created_at: timestamp("created_at").defaultNow().notNull(),
-  item_id: integer("item_id").references(() => items.id), // The Item that was bid on
+  item_id: integer("item_id").references(() => items.id).notNull(), // The Item that was bid on
   profile_id: text("profile_id").references(() => profiles.user_id), // Represents the person bidding
   updated_at: timestamp("updated_at").defaultNow().notNull(),
 }, (t) => ({

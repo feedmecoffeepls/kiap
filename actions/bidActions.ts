@@ -5,8 +5,9 @@ import { bids, SelectBid, SelectItem, InsertBid } from '../db/schema';
 import db from '../db/drizzle';
 
 import { currentUser } from '@clerk/nextjs/server';
+import { BidsWithItems } from '@/types/bidsWithRelations';
 
-export const getBidsByProfileId = async (profileId: string): Promise<SelectBid[]> => {
+export const getBidsByProfileId = async (profileId: string): Promise<BidsWithItems[]> => {
     const result = await db.query.bids.findMany(
         {
             where: (bids, { eq }) => (
@@ -15,6 +16,11 @@ export const getBidsByProfileId = async (profileId: string): Promise<SelectBid[]
             with: { item: { with: { sales: true } } }
         }
     )
+    console.log(result);
+
+    if (!result) {
+        throw new Error("No bids found");
+    }
 
     return result;
 };

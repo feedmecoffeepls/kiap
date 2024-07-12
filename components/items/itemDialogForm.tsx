@@ -3,15 +3,14 @@ import React from 'react';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { SelectItem, SelectItemWithItemImages } from '@/db/schema';
+import { SelectItemWithItemImages } from '@/db/schema';
 import { Dialog, DialogContent, DialogHeader, DialogTrigger, DialogTitle } from '../ui/dialog';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
 import { createItem } from '@/actions/itemActions';
 import { Textarea } from '../ui/textarea';
-import Image from 'next/image';
-import { upload } from '@vercel/blob/client';
+
 
 
 type ItemFormProps = {

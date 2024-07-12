@@ -31,7 +31,7 @@ const UserMenu = () => {
             </DropdownMenuTrigger>
             <DropdownMenuContent>
                 <Link href="/dashboard">
-                    <DropdownMenuItem className="cursor-pointer">Your Page</DropdownMenuItem>
+                    <DropdownMenuItem className="cursor-pointer">Your Activity</DropdownMenuItem>
                 </Link>
                 <DropdownMenuItem className="cursor-pointer" onSelect={() => signOut({ redirectUrl: '/' })}>Logout</DropdownMenuItem>
             </DropdownMenuContent>
