@@ -46,7 +46,7 @@ export const sales = pgTable("sales", {
   id: serial("id").primaryKey(),
   bid_id: integer("bid_id").references(() => bids.id),
   created_at: timestamp("created_at").defaultNow().notNull(),
-  item_id: integer("item_id").references(() => items.id),
+  item_id: integer("item_id").references(() => items.id).notNull(),
   profile_id: text("profile_id").references(() => profiles.user_id), // ID of the buyer
   updated_at: timestamp("updated_at").defaultNow().notNull(),
 }, (t) => ({

@@ -44,7 +44,7 @@ const BidsTable: React.FC = () => {
                         <TableRow key={"bid-" + key}>
                             <TableCell className="font-medium">{bid.item.title}</TableCell>
                             <TableCell>{formatPrice(bid.bid_amount)}</TableCell>
-                            <TableCell className="text-right">{bid.item?.sales ? "Successful" : "Pending"}</TableCell>
+                            <TableCell className="text-right">{bid.item.sales && bid.item.sales.length > 0 ? "Successful" : "Pending"}</TableCell>
                         </TableRow>
                     )}
                 </TableBody>

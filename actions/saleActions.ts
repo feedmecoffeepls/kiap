@@ -5,13 +5,15 @@ import { sales, SelectBid, SelectItem, SelectSale } from '../db/schema';
 import db from '../db/drizzle';
 
 import { currentUser } from '@clerk/nextjs/server';
+import { SalesWithRelations } from '@/types/salesWithRelations';
 
-export const getSalesByProfileId = async (profileId: string): Promise<SelectSale[]> => {
-    const result = await db
-        .select()
-        .from(sales)
-        .where(eq(sales.profile_id, profileId))
-        .execute();
+export const getSalesByProfileId = async (profileId: string): Promise<SalesWithRelations[]> => {
+    const result = await db.query.sales.findMany({
+        where: (sales, { eq }) => (
+            eq(sales.profile_id, profileId)
+        ),
+        with: { item: true, bid: true }
+    });
 
     return result;
 };

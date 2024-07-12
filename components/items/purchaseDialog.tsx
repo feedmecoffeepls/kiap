@@ -6,13 +6,15 @@ import { Button } from '../ui/button';
 import { SelectItem } from '@/db/schema';
 import { formatPrice } from '@/lib/formatPrice';
 import { createSale } from '@/actions/saleActions';
+import { toast } from '../ui/use-toast';
 
 
 type PurchaseDialogProps = {
     item: SelectItem;
+    refetch: () => void;
 };
 
-const PurchaseDialog: React.FC<PurchaseDialogProps> = ({ item }) => {
+const PurchaseDialog: React.FC<PurchaseDialogProps> = ({ item, refetch }) => {
 
     const [error, setError] = useState<string | null>(null);
 
@@ -22,10 +24,18 @@ const PurchaseDialog: React.FC<PurchaseDialogProps> = ({ item }) => {
             setError(sale.message);
             console.log(sale.message);
         }
+        await refetch();
+        setOpen(false)
+        toast({
+            title: "Item purchased",
+            description: "We have purchased your item",
+        })
     }
 
+    const [open, setOpen] = useState(false)
+
     return (
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild><Button variant="cta" size="cta">Buy now: ({formatPrice(item.selling_price)})</Button></DialogTrigger>
             <DialogContent >
                 <DialogHeader><DialogTitle>Purchase {item.title}</DialogTitle></DialogHeader>

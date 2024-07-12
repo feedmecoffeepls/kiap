@@ -14,6 +14,9 @@ import ItemDialogForm from '@/components/items/itemDialogForm';
 import { useUser } from '@clerk/nextjs';
 import { useSellerMode } from '@/stores/sellerMode';
 import { is } from 'drizzle-orm';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+import { items } from '@/db/schema';
 
 interface ItemPageProps {
     itemId: number;
@@ -75,17 +78,22 @@ const ItemPage: React.FC<ItemPageProps> = ({ itemId }) => {
                             <h6>Details</h6>
                             <p className="my-2">{item.description}</p>
                         </div>
-                        {!item.sales || item.sales?.length === 0 && !isOwner && (
+                        {!item.sales || item.sales?.length === 0 && !isOwner && user && (
                             <>
                                 <div className="full-w my-4">
-                                    <PurchaseDialog item={item} />
+                                    <PurchaseDialog item={item} refetch={refetch} />
                                 </div>
-                                <div className="full-w  my-4">
-                                    <BidDialog item={item} />
-                                </div>
+                                {!(item.bids[0]?.bid_amount + 100 > item.selling_price) && (
+                                    <div className="full-w  my-4">
+                                        <BidDialog item={item} refetch={refetch} />
+                                    </div>
+                                )}
+                                {(item.bids[0]?.bid_amount + 100 > item.selling_price) && <p>Minimum bid exceeds buyout price</p>}
                             </>
                         )}
+                        {!user && <Link href="/auth/login"><Button variant="cta" size="cta">Sign in to bid</Button></Link>}
                         {isOwner && <p className="font-bold">You are the seller of this item.</p>}
+                        {item.sales?.length > 0 && <p className="font-bold">Item has been sold</p>}
                     </div>
                 </div>
             </div>
