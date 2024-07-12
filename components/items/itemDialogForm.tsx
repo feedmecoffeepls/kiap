@@ -11,6 +11,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { createItem, updateItem } from '@/actions/itemActions';
 import { Textarea } from '../ui/textarea';
 import { toast } from '../ui/use-toast';
+import { formatPrice } from '@/lib/formatPrice';
 
 
 
@@ -41,6 +42,8 @@ const ItemDialogForm: React.FC<ItemFormProps> = ({ item, refetch }) => {
         defaultValues: item ? { title: item.title, selling_price: item.selling_price.toString(), description: item.description ? item.description : "" } : {},
     });
 
+    const currentPrice = form.watch('selling_price');
+
     const onSubmit = async (data: any) => {
 
         if (item) {
@@ -57,7 +60,7 @@ const ItemDialogForm: React.FC<ItemFormProps> = ({ item, refetch }) => {
             }
         } else {
             try {
-                const createdItem = await createItem({ item: { ...data, selling_price: parseFloat(data.selling_price) } });
+                const createdItem = await createItem({ item: { ...data, selling_price: parseFloat(data.selling_price) * 100 } });
                 await refetch();
                 toast({
                     title: "Item listed",
@@ -119,7 +122,7 @@ const ItemDialogForm: React.FC<ItemFormProps> = ({ item, refetch }) => {
                                 <FormItem className="w-full">
                                     <FormLabel>Buyout price</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="1920" {...field} />
+                                        <Input placeholder="19.20" {...field} />
                                     </FormControl>
                                     <FormDescription>
                                         This is the price at which the item will be sold
@@ -128,7 +131,7 @@ const ItemDialogForm: React.FC<ItemFormProps> = ({ item, refetch }) => {
                                 </FormItem>
                             )}
                         />
-                        <Button type="submit">Submit</Button>
+                        <Button variant="cta" size="cta" type="submit" className={"mt-4"} disabled={!currentPrice}> {currentPrice ? "List for " + formatPrice(parseFloat(currentPrice) * 100) : "Submit"}</Button>
                     </form>
                 </Form>
             </DialogContent>
