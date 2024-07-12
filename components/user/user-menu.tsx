@@ -25,7 +25,7 @@ const UserMenu = () => {
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
                 <Avatar className="cursor-pointer">
-                    <AvatarImage src="https://github.com/shadcn.png" alt="User avatar" />
+                    <AvatarImage src="/avatar.jpg" alt="User avatar" />
                     <AvatarFallback delayMs={600}>U</AvatarFallback>
                 </Avatar>
             </DropdownMenuTrigger>

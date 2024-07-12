@@ -63,7 +63,7 @@ const ItemPage: React.FC<ItemPageProps> = ({ itemId }) => {
                         )}
                         <div className="flex items-center mb-8">
                             <Avatar>
-                                <AvatarImage src="https://github.com/shadcn.png" alt="User avatar" />
+                                <AvatarImage src="/avatar.jpg" alt="User avatar" />
                                 <AvatarFallback delayMs={600}>U</AvatarFallback>
                             </Avatar>
                             <p className="ml-4 font-bold"> {item.profile?.username} </p>
