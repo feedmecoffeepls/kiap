@@ -23,7 +23,6 @@ const HomePage: React.FC = () => {
     </div>;
     if (error) return <div>Error: {error.message}</div>;
 
-    if (data.length === 0 && !isLoading) return <div>No items found</div>;
     return (
         <div>
             {user && sellerMode &&
@@ -31,7 +30,8 @@ const HomePage: React.FC = () => {
                     <ItemDialogForm refetch={refetch} />
                 </div>
             }
-            <ItemsList data={data} />
+            {(!data || data.length === 0) && !isLoading && <div>No items found</div>}
+            {data && data.length > 0 && <ItemsList data={data} />}
         </div>
     );
 };

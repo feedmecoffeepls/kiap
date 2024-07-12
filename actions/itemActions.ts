@@ -1,22 +1,13 @@
 "use server";
 
-import { and, asc, eq, gt, isNull, sql } from 'drizzle-orm';
-import { bids, itemImages, items, sales, SelectItemWithRelations } from '../db/schema';
+import { and, asc, eq, isNull } from 'drizzle-orm';
+import { bids, itemImages, items, sales, SelectBid, SelectItemImages, SelectItemWithRelations, SelectSale } from '../db/schema';
 import db from '../db/drizzle';
 import { SelectItem } from '../db/schema';
 import { currentUser } from '@clerk/nextjs/server';
+import { EnhancedSelectItemWithRelationsList } from '@/types/marketplaceSales';
 
-export const getItems = async (): Promise<SelectItem[]> => {
-
-    const test = await db.select()
-        .from(items)
-        .leftJoin(sales, eq(items.id, sales.item_id))
-        .leftJoin(itemImages, eq(items.id, itemImages.item_id))
-        .where(and(isNull(sales.id)))
-        .orderBy(asc(items.id))
-
-    console.log(test)
-
+export const getItems = async (): Promise<EnhancedSelectItemWithRelationsList | null> => {
 
     const result = await db.selectDistinctOn([items.id])
         .from(items)
@@ -26,7 +17,9 @@ export const getItems = async (): Promise<SelectItem[]> => {
         .leftJoin(itemImages, eq(items.id, itemImages.item_id))
         .orderBy(asc(items.id))
 
-    return result.map((item) => item.items);
+    console.log(result)
+
+    return result || null;
 };
 
 export const getItemsByProfileId = async (profileId: string): Promise<SelectItemWithRelations[] | null> => {
