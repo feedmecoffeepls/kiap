@@ -13,8 +13,15 @@ This README provides an overview of the Next.js website hosted at [https://kiap.
 - [Upload Thing](https://uploadthing.com/): Image upload host. Made famous by Theo (Youtuber).
 - [Tailwind](https://tailwindcss.com/): Tailwind.
 
+## Note
+- Schema is at db/schema.ts
+- Your activity page allows users to pick the highest bid to mark as sold (Seller mode)
 
 ## Assumptions made / Decisions taken
+
+### Buyer / Seller views
+- Interpreted that as a toggle between a buyer / seller mode
+- Used Zustand to control this
 
 ### Bid
 - Can't set a new bid if a bid that exceeds the selling price already exists
@@ -35,9 +42,6 @@ This README provides an overview of the Next.js website hosted at [https://kiap.
 
 ### Neon + Drizzle
 - Chose this stack instead of Supabase for the Schema + Typescript support (Seems to have slightly better support)
-
-## Note
-- Schema is at db/schema.ts
 
 
 ## Getting Started
