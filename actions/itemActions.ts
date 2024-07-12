@@ -20,6 +20,30 @@ export const getItems = async (cursor?: number, pageSize = 10): Promise<SelectIt
     return result.map((item) => item.items);
 };
 
+export const getItemsByProfileId = async (profileId: string): Promise<SelectItemWithRelations[] | null> => {
+
+    let result = await db.query.items.findMany(
+        {
+            where: (item, { eq }) => (
+                eq(item.profile_id, profileId)
+            ),
+            with: { sales: { with: { bid: true } }, bids: true, profile: true, images: true }
+        }
+    )
+
+    if (result) {
+        result.forEach((item) => {
+            const sortedBids = item.bids.sort((a, b) => b.bid_amount - a.bid_amount);
+            item.bids = sortedBids;
+        })
+        return result;
+    } else {
+        return null
+    }
+
+    return result || null;
+};
+
 export const getItem = async (itemId: number): Promise<SelectItemWithRelations | null> => {
     let result = await db.query.items.findFirst(
         {
