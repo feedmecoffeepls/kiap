@@ -13,3 +13,20 @@ export const createImages = async (itemId: number, blobUrl: string, utKey: strin
 
     return result ? result : { message: "Something went wrong" };
 };
+
+export const setBanner = async (itemId: number, imageId: number): Promise<{ message: string }> => {
+
+    await db
+        .update(itemImages)
+        .set({ is_banner: null })
+        .where(eq(itemImages.item_id, itemId))
+        .execute();
+
+    await db
+        .update(itemImages)
+        .set({ is_banner: true })
+        .where(eq(itemImages.id, imageId))
+        .execute();
+
+    return { message: "Banner set" };
+}

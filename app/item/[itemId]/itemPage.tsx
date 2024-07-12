@@ -55,7 +55,7 @@ const ItemPage: React.FC<ItemPageProps> = ({ itemId }) => {
                     <div className="full-w">
                         {sellerMode && isOwner && (
                             <div className="mb-8">
-                                <ImageDialog item={item} />
+                                <ImageDialog item={item} refetch={refetch} />
                                 <span className="ml-4">
                                     <ItemDialogForm item={item} refetch={refetch} />
                                 </span>
@@ -73,7 +73,7 @@ const ItemPage: React.FC<ItemPageProps> = ({ itemId }) => {
                             <div className="flex items-end">
                                 <p className="text-xl">{formatPrice(item.selling_price)}</p>
                                 {item.bids && item.bids.length > 0 && (
-                                    <p className="ml-4">Last Bid: {formatPrice(item.bids[0].bid_amount)}</p>
+                                    <p className="ml-4">Highest Bid: {formatPrice(item.bids[0].bid_amount)}</p>
                                 )}
                             </div>
                         </div>
