@@ -7,11 +7,14 @@ import db from '../db/drizzle';
 import { currentUser } from '@clerk/nextjs/server';
 
 export const getBidsByProfileId = async (profileId: string): Promise<SelectBid[]> => {
-    const result = await db
-        .select()
-        .from(bids)
-        .where(eq(bids.profile_id, profileId))
-        .execute();
+    const result = await db.query.bids.findMany(
+        {
+            where: (bids, { eq }) => (
+                eq(bids.profile_id, profileId)
+            ),
+            with: { item: { with: { sales: true } } }
+        }
+    )
 
     return result;
 };

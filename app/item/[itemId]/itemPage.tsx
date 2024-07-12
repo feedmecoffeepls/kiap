@@ -35,7 +35,7 @@ const ItemPage: React.FC<ItemPageProps> = ({ itemId }) => {
             <div className="relative">
                 <div className="sticky top-0 h-[100svh] p-8 ">
                     <div className="full-w">
-                        <div>
+                        <div className="mb-8">
                             <ImageDialog item={item} />
                         </div>
                         <div className="flex items-center mb-8">

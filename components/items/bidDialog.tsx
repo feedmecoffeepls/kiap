@@ -34,6 +34,10 @@ const BidDialog: React.FC<BidDialogProps> = ({ item }) => {
     const onSubmit = async (data: any) => {
         try {
             const insertedBid = await createBid({ item: item, bidAmount: parseInt(data.bid_amount) });
+            console.log(insertedBid);
+            if (insertedBid.message) {
+                form.setError('title', { message: insertedBid.message });
+            }
         } catch (error) {
             form.setError('title', { message: 'Failed to create bid' });
         }
