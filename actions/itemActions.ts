@@ -1,22 +1,30 @@
 "use server";
 
-import { and, asc, eq, gt, isNull, notExists, sql } from 'drizzle-orm';
-import { bids, items, sales, SelectItemWithRelations } from '../db/schema';
+import { and, asc, eq, gt, isNull, sql } from 'drizzle-orm';
+import { bids, itemImages, items, sales, SelectItemWithRelations } from '../db/schema';
 import db from '../db/drizzle';
 import { SelectItem } from '../db/schema';
 import { currentUser } from '@clerk/nextjs/server';
 
-export const getItems = async (cursor?: number, pageSize = 10): Promise<SelectItem[]> => {
+export const getItems = async (): Promise<SelectItem[]> => {
 
-    const result = await db.select()
+    const test = await db.select()
         .from(items)
         .leftJoin(sales, eq(items.id, sales.item_id))
-        .where(and(isNull(sales.id), cursor ? gt(items.id, cursor) : undefined))
-        .limit(pageSize)
+        .leftJoin(itemImages, eq(items.id, itemImages.item_id))
+        .where(and(isNull(sales.id)))
         .orderBy(asc(items.id))
-        .execute();
 
-    console.log(result);
+    console.log(test)
+
+
+    const result = await db.selectDistinctOn([items.id])
+        .from(items)
+        .where(and(isNull(sales.id)))
+        .leftJoin(sales, eq(items.id, sales.item_id))
+        .leftJoin(bids, eq(items.id, bids.item_id))
+        .leftJoin(itemImages, eq(items.id, itemImages.item_id))
+        .orderBy(asc(items.id))
 
     return result.map((item) => item.items);
 };

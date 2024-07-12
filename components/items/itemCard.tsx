@@ -11,7 +11,7 @@ interface ItemCardProps {
 const ItemCard: React.FC<ItemCardProps> = ({ item }) => {
     const priceInDecimal = (item.selling_price / 100).toFixed(2);
 
-    console.log(item)
+    console.log({ cardItem: item })
 
     return (
         <Link href={`/item/${item.id}`}>
@@ -23,7 +23,7 @@ const ItemCard: React.FC<ItemCardProps> = ({ item }) => {
                     <h6 className="card-title barlow font-bold">{item.title}</h6>
                     <div className="text-right">
                         <h6 className="card-text">${priceInDecimal}</h6>
-                        {/* <p className="card-text">Highest bid: ${priceInDecimal}</p> */}
+                        <p className="card-text">Last bid: ${priceInDecimal}</p>
                     </div>
                 </div>
             </div>
