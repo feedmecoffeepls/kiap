@@ -1,36 +1,22 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Next.js Website README
+
+This README provides an overview of the Next.js website hosted at [https://kiap.vercel.app/](https://kiap.vercel.app/). The website utilizes several technologies and libraries, including Drizzle ORM, Neon DB, TanStack Query, Zustand, and Clerk.
+
+## Technologies Used
+
+- [Next.js](https://nextjs.org/): Next.js is a React framework that enables server-side rendering and other powerful features for building modern web applications.
+- [Drizzle ORM](https://github.com/drizzle-orm/drizzle-orm): Drizzle ORM is an Object-Relational Mapping library for JavaScript, providing an easy way to interact with databases.
+- [Neon DB](https://github.com/neondb/neondb): Neon DB is a lightweight, schema-less database for Node.js applications.
+- [TanStack Query](https://github.com/tannerlinsley/react-query): TanStack Query is a powerful data-fetching and caching library for React applications.
+- [Zustand](https://github.com/pmndrs/zustand): Zustand is a small, fast, and scalable state management library for React.
+- [Clerk](https://clerk.dev/): Clerk is an authentication and user management service that simplifies the process of adding user accounts to your application.
 
 ## Getting Started
 
-First, run the development server:
+To run the website locally, follow these steps:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+1. Clone the repository: `git clone https://github.com/your-repo.git`
+2. Install dependencies: `npm install`
+3. Start the development server: `npm run dev`
+4. Set all .env variables
+5. Open your browser and navigate to [http://localhost:3000](http://localhost:3000)
